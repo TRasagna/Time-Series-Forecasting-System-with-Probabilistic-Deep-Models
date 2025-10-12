@@ -1,0 +1,38 @@
+# Temporal Fusion Transformer Configuration
+model:
+  name: "tft"
+  type: "attention_based"
+
+architecture:
+  hidden_size: 64
+  attention_head_size: 4
+  dropout: 0.1
+  hidden_continuous_size: 16
+  output_size: [1, 7]  # quantiles count
+  loss: "quantile"
+  add_relative_index: true
+
+attention:
+  num_attention_heads: 4
+  attention_dropout: 0.1
+
+embeddings:
+  categorical_embedding_sizes:
+    category: 16
+    region: 8
+    day_of_week: 4
+    month: 8
+
+training:
+  learning_rate: 0.03
+  reduce_on_plateau_patience: 4
+  gradient_clip_val: 0.1
+
+optimizer:
+  type: "ranger"  # AdamW with lookahead
+
+hyperparameter_search:
+  hidden_size: [32, 64, 128, 256]
+  attention_head_size: [1, 2, 4, 8]
+  learning_rate: [0.001, 0.01, 0.03, 0.1]
+  dropout: [0.0, 0.1, 0.2, 0.3]

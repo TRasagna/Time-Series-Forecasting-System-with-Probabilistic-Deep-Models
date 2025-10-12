@@ -1,0 +1,39 @@
+# Training Configuration
+model:
+  type: "deepar"  # Options: deepar, tft, nbeats
+  save_path: "models/"
+
+data:
+  train_path: "data/processed/train.csv"
+  val_path: "data/processed/val.csv"
+  test_path: "data/processed/test.csv"
+  target_column: "value"
+  time_column: "date"
+  id_column: "series_id"
+  categorical_features: ["category", "region"]
+  numerical_features: ["promotion", "holiday"]
+
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  early_stopping_patience: 10
+  validation_frequency: 1
+  grad_clip_val: 1.0
+  seed: 42
+
+prediction:
+  horizon: 30
+  quantiles: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+mlflow:
+  experiment_name: "time-series-forecasting"
+  tracking_uri: "http://localhost:5000"
+  artifact_location: "mlflow-artifacts/"
+
+optimization:
+  enabled: true
+  n_trials: 50
+  study_name: "hyperparameter_optimization"
+  direction: "minimize"
+  metric: "mae"

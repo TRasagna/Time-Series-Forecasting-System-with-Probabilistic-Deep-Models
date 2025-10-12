@@ -1,0 +1,41 @@
+# DeepAR Model Configuration
+model:
+  name: "deepar"
+  type: "probabilistic"
+
+architecture:
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.1
+  prediction_length: 30
+  context_length: 168  # 7 days * 24 hours
+  num_parallel_samples: 100
+
+distribution:
+  type: "negative_binomial"  # Options: negative_binomial, gaussian, student_t
+
+embeddings:
+  categorical_embedding_sizes:
+    category: 16
+    region: 8
+    day_of_week: 4
+    hour_of_day: 8
+
+training:
+  learning_rate: 0.001
+  weight_decay: 1e-6
+  lr_scheduler: "step"
+  lr_step_size: 50
+  lr_gamma: 0.5
+
+optimizer:
+  type: "adam"
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1e-8
+
+hyperparameter_search:
+  hidden_size: [32, 64, 128]
+  num_layers: [1, 2, 3]
+  learning_rate: [0.0001, 0.001, 0.01]
+  dropout: [0.0, 0.1, 0.2]
